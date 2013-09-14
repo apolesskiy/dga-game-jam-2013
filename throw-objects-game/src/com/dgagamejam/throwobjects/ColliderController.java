@@ -8,6 +8,14 @@ public class ColliderController extends GameController {
 	
 	public void update(float dt, GameScreen screen) {
 		super.update(dt, screen);
+		
+		//check if we are dead
+		if(getModel().hp <= 0) {
+			getModel().destroyed = true;
+			onDestroy();
+			return;
+		}
+		
 		//gravity things
 		//check if we are on our level - if we are above it, accelerate down
 		//1. check that our level exists. If not, decrement by 1.
@@ -27,9 +35,17 @@ public class ColliderController extends GameController {
 		getModel().y += getModel().verticalVelocity * dt;
 		
 		if(descending && getModel().y < getModel().level * Constants.LEVEL_HEIGHT) {
+			
 			getModel().y = getModel().level * Constants.LEVEL_HEIGHT;
+			//take fall damage if velocity is high enough
+			if(getModel().verticalVelocity > getModel().fallDamageThreshold) {
+				getModel().hp -= (int)(getModel().verticalVelocity - getModel().fallDamageThreshold);
+			}
 			getModel().verticalVelocity = 0;
+
 		}
 	}
+	
+	public void onDestroy() {}
 	
 }

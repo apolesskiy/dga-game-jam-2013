@@ -3,23 +3,30 @@ img.png
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
-Gear1
+background
   rotate: false
   xy: 1, 1
+  size: 700, 420
+  orig: 700, 420
+  offset: 0, 0
+  index: -1
+Gear1
+  rotate: false
+  xy: 703, 293
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: -1
 Gear2
   rotate: false
-  xy: 131, 1
+  xy: 703, 163
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: -1
 Gear3
   rotate: false
-  xy: 261, 1
+  xy: 833, 293
   size: 128, 128
   orig: 128, 128
   offset: 0, 0

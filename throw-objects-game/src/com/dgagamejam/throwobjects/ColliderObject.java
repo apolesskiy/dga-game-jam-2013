@@ -2,10 +2,10 @@ package com.dgagamejam.throwobjects;
 
 import com.badlogic.gdx.math.Rectangle;
 
-public abstract class ColliderObject extends GameObject {
-
-	public ColliderObject(float x, float y, Rectangle collision, int level) {
-		super(x, y);
+public class ColliderObject extends GameObject {
+	
+	public ColliderObject(float x, float y, float rotation, float scale, Rectangle collision, int level) {
+		super(x, y, rotation, scale);
 		
 		this.collision = collision;
 		this.level = level;
@@ -16,7 +16,11 @@ public abstract class ColliderObject extends GameObject {
 	
 	int level;
 	float verticalVelocity = 0f;
+	float fallDamageThreshold = 25;
+	int hp = 100;
 
+	boolean destroyed = false;
+	
 	public Rectangle getCollision() {
 		return collision;
 	}
@@ -31,6 +35,10 @@ public abstract class ColliderObject extends GameObject {
 
 	public void setLevel(int level) {
 		this.level = level;
+	}
+	
+	public boolean collides (ColliderObject other) {
+		return collision.overlaps(other.collision) && !destroyed &&!other.destroyed;
 	}
 	
 }

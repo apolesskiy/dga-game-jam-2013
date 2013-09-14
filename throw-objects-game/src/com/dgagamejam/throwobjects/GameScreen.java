@@ -10,10 +10,9 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Rectangle;
@@ -29,8 +28,6 @@ public class GameScreen implements Screen {
 	
 	Game game;
 	
-	//doodad list
-	
 	//player projectile list
 	
 	//enemy/object list
@@ -39,9 +36,10 @@ public class GameScreen implements Screen {
 	
 	LevelSegment[] levels;
 
-	HashSet<LevelTransition> levelTransitions = new HashSet<LevelTransition>(20);	
-	
 	HashSet<BackgroundController> bgGears;
+
+	HashSet<DoodadController> doodads;
+	
 	boolean spawnGear;
 
 	public ShapeRenderer shapeRenderer;
@@ -51,9 +49,6 @@ public class GameScreen implements Screen {
 	}
 
 	TextureAtlas imageLibrary;
-	
-	
-	
 	
 	TextureRegion bg;
 	float bgX;
@@ -72,6 +67,9 @@ public class GameScreen implements Screen {
 		
 		imageLibrary = new TextureAtlas("data/images/img.pack");
 		
+		//initialize factories
+		BackgroundFactory.initialize(this);
+		
 		//
 		shapeRenderer = new ShapeRenderer();		
 		
@@ -86,8 +84,8 @@ public class GameScreen implements Screen {
 		levels[startLevel] = new LevelSegment(0f, (float)(random.nextInt(200)+200), startLevel);
 		levels[startLevel+1] = new LevelSegment(0f, (float)(100), startLevel+1);
 		
-		levels[startLevel].transitions.add(new LevelTransition(50, true));
-		levels[startLevel+1].transitions.add(new LevelTransition(100, false));
+		levels[startLevel].addLevelTransition(50, true);
+		levels[startLevel+1].addLevelTransition(100, false);
 		
 		VehicleObject playercar = new VehicleObject(10f, Constants.LEVEL_HEIGHT*startLevel+1f, new Rectangle(-3,0,6,2), startLevel);
 		
@@ -95,9 +93,9 @@ public class GameScreen implements Screen {
 		
 		((VehicleObject)player.model).velocity = 2f;
 		
-		bg = this.imageLibrary.findRegion("Gear1");
-		width = bg.getRegionWidth()/4;
-		height = bg.getRegionHeight()/4;
+		bg = this.imageLibrary.findRegion("background");
+		width = bg.getRegionWidth()/10;
+		height = bg.getRegionHeight()/10;
 		bgX = player.model.getX() - (width/2);
 		bgY = player.model.getY() - (height/2);
 		
@@ -116,24 +114,57 @@ public class GameScreen implements Screen {
 		player.update(dt, this);
 		
 		//spawn gears
-		if(spawnGear && random.nextFloat()>0.90f){
-			BackgroundObject g = new BackgroundObject(player.model.x + 80f, random.nextInt((int)(Constants.LEVEL_COUNT * Constants.LEVEL_HEIGHT)));
-			BackgroundController gear = new BackgroundController(g);
-			gear.getModel().rotationRate = 90-random.nextInt(180);
-			gear.getModel().scale = random.nextFloat() + 0.5f;
-			bgGears.add(gear);
-		}
-		
-		Iterator<BackgroundController> iter = bgGears.iterator();
-		BackgroundController bgo;
-		while(iter.hasNext()) {
-			bgo = iter.next();
-			if(player.model.x - bgo.model.x > 1000) {
-				iter.remove();
-			} else {
-				bgo.update(dt, this);
+		{
+			float spawnChance = 0.05f * player.getModel().velocity * dt;
+			if(random.nextFloat() < spawnChance) {
+				float spawnScale = ((float)random.nextInt(8)) / 2f;
+				float spawnY = player.getModel().y + (random.nextInt(Constants.SCREEN_HEIGHT) - Constants.SCREEN_HEIGHT / 2) / 10f;
+				float spawnX = player.getModel().x + 80;
+				BackgroundFactory.createBackgroundGear(this, spawnX, spawnY, spawnScale);
+				
 			}
 		}
+
+		//update gears
+		{
+			Iterator<BackgroundController> iter = bgGears.iterator();
+			BackgroundController bgo;
+			while(iter.hasNext()) {
+				bgo = iter.next();
+				if(player.model.x - bgo.model.x > Constants.OBJECT_DESPAWN_DISTANCE) {
+					iter.remove();
+				} else {
+					bgo.update(dt, this);
+				}
+			}
+		}
+		
+		//update doodads (NOT collision)
+		/*{
+			Iterator<DoodadController> iter = doodads.iterator();
+			DoodadController d;
+			while(iter.hasNext()) {
+				d = iter.next();
+				if(player.model.x - d.model.x > 800) {
+					iter.remove();
+				} else {
+					d.update(dt, this);
+				}
+			}
+		}*/
+		
+		
+		//update background
+		if((player.model.getX() - bgX) > width){
+			bgX += width;
+		}
+		if((player.model.getY() - bgY) > (height)){
+			bgY += height;
+		}
+		else if((bgY - player.model.getY()) > (height)){
+			bgY -= height;
+		}
+		
 	}
 	
 	public void draw(float dt) {
@@ -146,28 +177,23 @@ public class GameScreen implements Screen {
 		{
 			//draw everything (in order!)
 			
-			//draw player
-			player.draw(dt, batch, this);
-			
-			
-			//if((bgX - player.model.getX()) > ){
-				//bgx += width;
-			//}
-			
-			
 			//draw background
 			batch.draw(bg, bgX, bgY, width, height);
-			batch.draw(bg, bgX + width, bgY, width, height);
-			batch.draw(bg, bgX - width, bgY, width, height);
-			batch.draw(bg, bgX, bgY + height, width, height);
-			batch.draw(bg, bgX, bgY - height, width, height);
-			batch.draw(bg, bgX + width, bgY + height, width, height);
-			batch.draw(bg, bgX - width, bgY - height, width, height);
-			batch.draw(bg, bgX + width, bgY - height, width, height);
-			batch.draw(bg, bgX - width, bgY + height, width, height);
+			batch.draw(bg, bgX + width - 0.1f, bgY, width, height);
+			batch.draw(bg, bgX - width + 0.1f, bgY, width, height);
+			batch.draw(bg, bgX, bgY + height - 0.1f, width, height);
+			batch.draw(bg, bgX, bgY - height + 0.1f, width, height);
+			batch.draw(bg, bgX + width - 0.1f, bgY + height - 0.1f, width, height);
+			batch.draw(bg, bgX - width + 0.1f, bgY - height + 0.1f, width, height);
+			batch.draw(bg, bgX + width - 0.1f, bgY - height + 0.1f, width, height);
+			batch.draw(bg, bgX - width + 0.1f, bgY + height - 0.1f, width, height);	
+			batch.draw(bg, bgX, bgY + 2 * height - 0.1f, width, height);
+			batch.draw(bg, bgX, bgY - 2 * height + 0.1f, width, height);
+			batch.draw(bg, bgX + width - 0.1f, bgY + 2 * height - 0.1f, width, height);
+			batch.draw(bg, bgX + width - 0.1f, bgY - 2 * height + 0.1f, width, height);
+			batch.draw(bg, bgX - width + 0.1f, bgY + 2 * height - 0.1f, width, height);
+			batch.draw(bg, bgX - width + 0.1f, bgY - 2 * height + 0.1f, width, height);
 
-
-			
 			
 			for(BackgroundController bc : bgGears){
 				bc.draw(dt, batch, this);
@@ -180,6 +206,9 @@ public class GameScreen implements Screen {
 				}
 	
 			}
+			
+			//draw player
+			player.draw(dt, batch, this);
 			
 			shapeRenderer.begin(ShapeType.Circle); 	
 			{

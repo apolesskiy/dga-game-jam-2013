@@ -1,7 +1,5 @@
 package com.dgagamejam.throwobjects;
 
-import java.util.HashSet;
-
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
@@ -12,7 +10,17 @@ public class LevelSegment {
 	
 	int index;
 	
-	HashSet<LevelTransition> transitions = new HashSet<LevelTransition>();
+	LevelTransition[] transitions = new LevelTransition[10];
+	
+	int levelTransitionH = 0;
+	
+	public void addLevelTransition(float pos, boolean up) {
+		if(transitions[levelTransitionH] == null)
+			transitions[levelTransitionH] = new LevelTransition(pos, up);
+		else
+			transitions[levelTransitionH].reinit(pos, up);
+		levelTransitionH = (levelTransitionH + 1) % transitions.length;
+	}
 	
 	public LevelSegment( float s, float e, int l ) {
 		start = s; end = e; index = l;
@@ -29,6 +37,7 @@ public class LevelSegment {
 		gameScreen.shapeRenderer.end();
 		
 		for(LevelTransition t : transitions) {
+			if(t == null) continue;
 			gameScreen.shapeRenderer.begin(ShapeType.Line);
 			gameScreen.shapeRenderer.setColor(Color.RED);
 			gameScreen.shapeRenderer.line(t.pos, index * Constants.LEVEL_HEIGHT, t.pos + Constants.ASCENT_LENGTH, (t.up ? index+1 : index-1) * Constants.LEVEL_HEIGHT);

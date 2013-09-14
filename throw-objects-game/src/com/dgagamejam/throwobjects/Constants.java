@@ -12,4 +12,5 @@ public final class Constants {
 	
 	public static final float ASCENT_LENGTH = 30f;
 	public static final float TRANSITION_EPSILON = 1f;
+	public static final float OBJECT_DESPAWN_DISTANCE = 100f;
 }

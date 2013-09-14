@@ -38,7 +38,9 @@ public class VehicleController extends ColliderController {
 	
 	public void levelUp(GameScreen screen) {
 		//todo: check if in transition window
+		if(getModel().level > -1 && getModel().level < Constants.LEVEL_COUNT) return;
 		for(LevelTransition t : screen.levels[getModel().level].transitions) {
+			if(t==null) continue;
 			if(t.up && t.inEpsilon(getModel().x)) {
 				getModel().level += 1;
 				break;
@@ -48,7 +50,9 @@ public class VehicleController extends ColliderController {
 	
 	public void levelDown(GameScreen screen) {
 		//todo: check if in transition window
+		if(getModel().level > -1 && getModel().level < Constants.LEVEL_COUNT) return;
 		for(LevelTransition t : screen.levels[getModel().level].transitions) {
+			if(t==null) continue;
 			if(!t.up && t.inEpsilon(getModel().x)) {
 				getModel().level -= 1;
 				break;
