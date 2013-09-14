@@ -1,5 +1,6 @@
 package com.dgagamejam.throwobjects;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 import com.badlogic.gdx.Game;
@@ -31,7 +32,14 @@ public class GameScreen implements Screen {
 	//enemy projectile list
 	
 	LevelSegment[] levels;
-
+	
+	
+	
+	ArrayList<BackgroundController> bgGears;
+	boolean spawnGear;
+	
+	
+	
 	public ShapeRenderer shapeRenderer;
 	
 	public GameScreen(Game game) {
@@ -48,7 +56,10 @@ public class GameScreen implements Screen {
 		camera = new OrthographicCamera(w, h);
 		
 		//
-		shapeRenderer = new ShapeRenderer();
+		shapeRenderer = new ShapeRenderer();		
+		
+		bgGears = new ArrayList<BackgroundController>();
+		spawnGear = false;	
 		
 		//level and objects init
 		levels = new LevelSegment[Constants.LEVEL_COUNT];
@@ -97,6 +108,17 @@ public class GameScreen implements Screen {
 			}
 
 		}
+		
+		//spawn gears
+		if(spawnGear){
+			BackgroundObject g = new BackgroundObject(random.nextInt(Constants.SCREEN_WIDTH), random.nextInt(Constants.SCREEN_HEIGHT));
+			BackgroundController gear = new BackgroundController(g);
+			bgGears.add(gear);
+		}
+		
+		for(int j = 0; j < bgGears.size(); j++){
+			bgGears.get(j).draw(dt, batch, this);
+		}	
 		
 		//draw player
 		player.draw(dt, batch, this);
