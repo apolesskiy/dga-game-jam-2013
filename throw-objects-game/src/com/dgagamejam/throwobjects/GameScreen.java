@@ -12,6 +12,7 @@ import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Rectangle;
@@ -49,6 +50,12 @@ public class GameScreen implements Screen {
 
 	TextureAtlas imageLibrary;
 	
+	TextureRegion bg;
+	float bgX;
+	float bgY;
+	float width;
+	float height;
+	
 	@Override
 	public void show() {
 		
@@ -84,6 +91,14 @@ public class GameScreen implements Screen {
 		player = (PlayerObjectController)VehicleFactory.createTank(this, startLevel, 0f, true);
 		
 		((VehicleObject)player.model).velocity = 2f;
+		
+		bg = this.imageLibrary.findRegion("background");
+		width = bg.getRegionWidth()/10;
+		height = bg.getRegionHeight()/10;
+		bgX = player.model.getX() - (width/2);
+		bgY = player.model.getY() - (height/2);
+		
+		
 	}
 	
 	@Override
@@ -136,6 +151,19 @@ public class GameScreen implements Screen {
 				}
 			}
 		}*/
+		
+		
+		//update background
+		if((player.model.getX() - bgX) > width){
+			bgX += width;
+		}
+		if((player.model.getY() - bgY) > (height)){
+			bgY += height;
+		}
+		else if((bgY - player.model.getY()) > (height)){
+			bgY -= height;
+		}
+		
 	}
 	
 	public void draw(float dt) {
@@ -147,6 +175,24 @@ public class GameScreen implements Screen {
 		batch.begin();
 		{
 			//draw everything (in order!)
+			
+			//draw background
+			batch.draw(bg, bgX, bgY, width, height);
+			batch.draw(bg, bgX + width - 0.1f, bgY, width, height);
+			batch.draw(bg, bgX - width + 0.1f, bgY, width, height);
+			batch.draw(bg, bgX, bgY + height - 0.1f, width, height);
+			batch.draw(bg, bgX, bgY - height + 0.1f, width, height);
+			batch.draw(bg, bgX + width - 0.1f, bgY + height - 0.1f, width, height);
+			batch.draw(bg, bgX - width + 0.1f, bgY - height + 0.1f, width, height);
+			batch.draw(bg, bgX + width - 0.1f, bgY - height + 0.1f, width, height);
+			batch.draw(bg, bgX - width + 0.1f, bgY + height - 0.1f, width, height);	
+			batch.draw(bg, bgX, bgY + 2 * height - 0.1f, width, height);
+			batch.draw(bg, bgX, bgY - 2 * height + 0.1f, width, height);
+			batch.draw(bg, bgX + width - 0.1f, bgY + 2 * height - 0.1f, width, height);
+			batch.draw(bg, bgX + width - 0.1f, bgY - 2 * height + 0.1f, width, height);
+			batch.draw(bg, bgX - width + 0.1f, bgY + 2 * height - 0.1f, width, height);
+			batch.draw(bg, bgX - width + 0.1f, bgY - 2 * height + 0.1f, width, height);
+
 			
 			for(BackgroundController bc : bgGears){
 				bc.draw(dt, batch, this);
