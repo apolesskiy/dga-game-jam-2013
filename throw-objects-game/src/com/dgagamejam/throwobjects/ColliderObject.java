@@ -37,6 +37,10 @@ public class ColliderObject extends GameObject {
 		this.level = level;
 	}
 	
+	public int getHp(){
+		return hp;
+	}
+	
 	public boolean collides (ColliderObject other) {
 		return collision.overlaps(other.collision) && !destroyed &&!other.destroyed;
 	}
