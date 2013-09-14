@@ -15,7 +15,6 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
-import com.badlogic.gdx.math.Rectangle;
 
 public class GameScreen implements Screen {
 
@@ -35,7 +34,8 @@ public class GameScreen implements Screen {
 	//enemy projectile list
 	
 	LevelSegment[] levels;
-
+	LevelSegmentGenerator levelGen;
+	
 	HashSet<BackgroundController> bgGears;
 
 	HashSet<DoodadController> doodads;
@@ -69,35 +69,30 @@ public class GameScreen implements Screen {
 		
 		//initialize factories
 		BackgroundFactory.initialize(this);
+		DoodadFactory.initialize(this);
 		VehicleFactory.initialize(this);
+		LevelSegment.initialize(this);
 		
 		//
+		levelGen = new LevelSegmentGenerator(this);
+		
 		shapeRenderer = new ShapeRenderer();		
 		
 		bgGears = new HashSet<BackgroundController>(20);
-		spawnGear = true;	
+		doodads = new HashSet<DoodadController>(20);	
 		
 		//level and objects init
 		levels = new LevelSegment[Constants.LEVEL_COUNT];
 		
-		int startLevel = random.nextInt(Constants.LEVEL_COUNT-1);
+		levelGen.generateStart();
 		
-		levels[startLevel] = new LevelSegment(0f, (float)(random.nextInt(200)+200), startLevel);
-		levels[startLevel+1] = new LevelSegment(0f, (float)(100), startLevel+1);
-		
-		levels[startLevel].addLevelTransition(50, true);
-		levels[startLevel+1].addLevelTransition(100, false);
-		
-		player = (PlayerObjectController)VehicleFactory.createTank(this, startLevel, 0f, true);
-		
-		((VehicleObject)player.model).velocity = 2f;
+
 		
 		bg = this.imageLibrary.findRegion("background");
 		width = bg.getRegionWidth()/10;
 		height = bg.getRegionHeight()/10;
 		bgX = player.model.getX() - (width/2);
 		bgY = player.model.getY() - (height/2);
-		
 		
 	}
 	
@@ -139,7 +134,7 @@ public class GameScreen implements Screen {
 		}
 		
 		//update doodads (NOT collision)
-		/*{
+		{
 			Iterator<DoodadController> iter = doodads.iterator();
 			DoodadController d;
 			while(iter.hasNext()) {
@@ -150,7 +145,7 @@ public class GameScreen implements Screen {
 					d.update(dt, this);
 				}
 			}
-		}*/
+		}
 		
 		
 		//update background
@@ -204,6 +199,11 @@ public class GameScreen implements Screen {
 					levels[i].draw(dt, batch, this);
 				}
 	
+			}
+			
+			//draw doodads
+			for(DoodadController d: doodads) {
+				d.draw(dt, batch, this);
 			}
 			
 			//draw player

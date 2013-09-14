@@ -50,7 +50,6 @@ public class ColliderController extends GameController {
 		getModel().y += getModel().verticalVelocity * dt;
 		
 		if(descending && getModel().y - getModel().collision.height/2f < getModel().level * Constants.LEVEL_HEIGHT) {
-			System.out.println("ASD");
 			getModel().y = getModel().level * Constants.LEVEL_HEIGHT + getModel().collision.height/2f;
 			//take fall damage if velocity is high enough
 			if(getModel().verticalVelocity > getModel().fallDamageThreshold) {

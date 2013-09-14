@@ -16,7 +16,7 @@ public class ColliderObject extends GameObject {
 	
 	int level;
 	float verticalVelocity = 0f;
-	float fallDamageThreshold = 25;
+	float fallDamageThreshold = 30;
 	int hp = 100;
 
 	boolean destroyed = false;

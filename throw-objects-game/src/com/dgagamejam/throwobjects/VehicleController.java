@@ -1,8 +1,5 @@
 package com.dgagamejam.throwobjects;
 
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 
 public class VehicleController extends ColliderController {
 	
@@ -14,15 +11,22 @@ public class VehicleController extends ColliderController {
 	public void update(float dt, GameScreen screen) {
 		super.update(dt, screen);
 		
+		model.rotation = 0f;
+		
 		model.x += ((VehicleObject)model).velocity * dt;
 		
 		//ascend to a higher level if we should/can
 		if(getModel().y - getModel().collision.height/2f < getModel().level * Constants.LEVEL_HEIGHT) {
+			model.rotation = 18.43f;
 			float ascentSlope = Constants.LEVEL_HEIGHT/Constants.ASCENT_LENGTH;
 			float dy = getModel().velocity * dt * ascentSlope;
 			getModel().y += dy;
 		}
 		
+		//if we are falling, set rotation
+		if(getModel().y - getModel().collision.height/2f > getModel().level * Constants.LEVEL_HEIGHT) {
+			model.rotation = (float)Math.toDegrees(Math.atan2(getModel().verticalVelocity, getModel().velocity));
+		}
 	}
 	
 	public void accelerate(float dt) {
@@ -37,7 +41,7 @@ public class VehicleController extends ColliderController {
 	
 	public void levelUp(GameScreen screen) {
 		//todo: check if in transition window
-		if(getModel().level == Constants.LEVEL_COUNT) return;
+		if(getModel().level >= Constants.LEVEL_COUNT || getModel().level<0) return;
 		for(LevelTransition t : screen.levels[getModel().level].transitions) {
 			if(t==null) continue;
 			if(t.up && t.inEpsilon(getModel().x)) {
@@ -49,7 +53,7 @@ public class VehicleController extends ColliderController {
 	
 	public void levelDown(GameScreen screen) {
 		//todo: check if in transition window
-		if(getModel().level < 1) return;
+		if(getModel().level >= Constants.LEVEL_COUNT || getModel().level<0) return;
 		for(LevelTransition t : screen.levels[getModel().level].transitions) {
 			if(t==null) continue;
 			if(!t.up && t.inEpsilon(getModel().x)) {
