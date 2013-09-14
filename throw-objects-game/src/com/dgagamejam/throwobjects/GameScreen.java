@@ -1,6 +1,7 @@
 package com.dgagamejam.throwobjects;
 
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Random;
 
 import com.badlogic.gdx.Game;
@@ -10,6 +11,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Rectangle;
@@ -46,6 +48,8 @@ public class GameScreen implements Screen {
 		this.game = game;
 	}
 
+	TextureAtlas imageLibrary;
+	
 	@Override
 	public void show() {
 		
@@ -55,16 +59,18 @@ public class GameScreen implements Screen {
 		float h = Gdx.graphics.getHeight();
 		camera = new OrthographicCamera(w/10, h/10);
 		
+		imageLibrary = new TextureAtlas("data/images/img.pack");
+		
 		//
 		shapeRenderer = new ShapeRenderer();		
 		
 		bgGears = new HashSet<BackgroundController>(20);
-		spawnGear = false;	
+		spawnGear = true;	
 		
 		//level and objects init
 		levels = new LevelSegment[Constants.LEVEL_COUNT];
 		
-		int startLevel = random.nextInt(Constants.LEVEL_COUNT);
+		int startLevel = random.nextInt(Constants.LEVEL_COUNT-1);
 		
 		levels[startLevel] = new LevelSegment(0f, (float)(random.nextInt(200)+200), startLevel);
 		levels[startLevel+1] = new LevelSegment(0f, (float)(100), startLevel+1);
@@ -90,6 +96,25 @@ public class GameScreen implements Screen {
 		//update player
 		player.update(dt, this);
 		
+		//spawn gears
+		if(spawnGear && random.nextFloat()>0.90f){
+			BackgroundObject g = new BackgroundObject(player.model.x + 80f, random.nextInt((int)(Constants.LEVEL_COUNT * Constants.LEVEL_HEIGHT)));
+			BackgroundController gear = new BackgroundController(g);
+			gear.getModel().rotationRate = 90-random.nextInt(180);
+			gear.getModel().scale = random.nextFloat() + 0.5f;
+			bgGears.add(gear);
+		}
+		
+		Iterator<BackgroundController> iter = bgGears.iterator();
+		BackgroundController bgo;
+		while(iter.hasNext()) {
+			bgo = iter.next();
+			if(player.model.x - bgo.model.x > 1000) {
+				iter.remove();
+			} else {
+				bgo.update(dt, this);
+			}
+		}
 	}
 	
 	public void draw(float dt) {
@@ -101,6 +126,10 @@ public class GameScreen implements Screen {
 		batch.begin();
 		{
 			//draw everything (in order!)
+			
+			for(BackgroundController bc : bgGears){
+				bc.draw(dt, batch, this);
+			}	
 			
 			//draw levels + transitions
 			for(int i = Constants.LEVEL_COUNT-1; i>=0; i--) {
@@ -120,20 +149,6 @@ public class GameScreen implements Screen {
 			}	
 			shapeRenderer.end();
 		}
-		
-		//spawn gears
-		if(spawnGear){
-			BackgroundObject g = new BackgroundObject(random.nextInt(Constants.SCREEN_WIDTH), random.nextInt(Constants.SCREEN_HEIGHT));
-			BackgroundController gear = new BackgroundController(g);
-			bgGears.add(gear);
-		}
-		
-		for(BackgroundController bc : bgGears){
-			bc.draw(dt, batch, this);
-		}	
-		
-		//draw player
-		player.draw(dt, batch, this);
 		
 		batch.end();
 	}

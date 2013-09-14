@@ -2,10 +2,16 @@ package com.dgagamejam.throwobjects;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.Rectangle;
 
 public class BackgroundObject extends GameObject{
+	
+	float rotationRate = 90f;
+	
+	float rotation = 0f;
+	
+	float scale = 1f;
 	
 	public BackgroundObject(float x, float y) {
 		super(x, y);
@@ -16,21 +22,26 @@ public class BackgroundObject extends GameObject{
 	}
 }
 
-class BackgroundObjectView extends GameObjectView{
+class BackgroundObjectView extends GameObjectView {
+	
+	public static final String[] textureNames = new String[] {
+		"Gear1", "Gear2", "Gear3"
+	};
+	
+	String myTexture;
 	
 	public BackgroundObjectView(BackgroundController ctr) {
 		super(ctr);
+		myTexture = textureNames[new java.util.Random().nextInt(3)];
 	}
 	
-	ShapeRenderer sr = new ShapeRenderer();
+	public BackgroundObject getModel() {
+		return (BackgroundObject)controller.getModel();
+	}
 	
 	public void draw (float dt, SpriteBatch sb, GameScreen screen) {
-		
-		screen.shapeRenderer.begin(ShapeRenderer.ShapeType.FilledRectangle);
-		BackgroundObject bg = (BackgroundObject)getModel();
-		screen.shapeRenderer.setColor(Color.RED);
-		screen.shapeRenderer.filledRect(bg.x, bg.y, 10, 10);
-		screen.shapeRenderer.end();
+		TextureRegion tr = screen.imageLibrary.findRegion(myTexture);
+		sb.draw(tr, getModel().x, getModel().y, tr.getRegionWidth()/20, tr.getRegionHeight()/20, tr.getRegionWidth()/10, tr.getRegionHeight()/10, getModel().scale, getModel().scale, getModel().rotation);
 	}
 	
 	public void update(float dt, GameScreen screen) {

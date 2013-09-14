@@ -9,15 +9,13 @@ public class BackgroundController extends GameController{
 		view = (BackgroundObjectView) o.createView(this);
 	}
 	
-	public void update(float dt, GameScreen screen) {
-		if(view != null) {
-			view.update(dt, screen);
-		}
+	public BackgroundObject getModel() {
+		return (BackgroundObject)model;
 	}
 	
-	public void draw(float dt, SpriteBatch sb, GameScreen screen) {
-		if(view != null) {
-			view.draw(dt, sb, screen);
-		}
+	public void update(float dt, GameScreen screen) {
+		super.update(dt, screen);
+		
+		getModel().rotation += getModel().rotationRate * dt;
 	}
 }
