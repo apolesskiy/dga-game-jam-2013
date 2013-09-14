@@ -56,6 +56,9 @@ public class GameScreen implements Screen {
 	float width;
 	float height;
 	
+	
+	
+	
 	@Override
 	public void show() {
 		
@@ -98,7 +101,6 @@ public class GameScreen implements Screen {
 		height = bg.getRegionHeight()/10;
 		bgX = player.model.getX() - (width/2);
 		bgY = player.model.getY() - (height/2);
-		
 		
 	}
 	
@@ -177,6 +179,7 @@ public class GameScreen implements Screen {
 		{
 			//draw everything (in order!)
 			
+			
 			//draw background
 			batch.draw(bg, bgX, bgY, width, height);
 			batch.draw(bg, bgX + width - 0.1f, bgY, width, height);
@@ -193,7 +196,7 @@ public class GameScreen implements Screen {
 			batch.draw(bg, bgX + width - 0.1f, bgY - 2 * height + 0.1f, width, height);
 			batch.draw(bg, bgX - width + 0.1f, bgY + 2 * height - 0.1f, width, height);
 			batch.draw(bg, bgX - width + 0.1f, bgY - 2 * height + 0.1f, width, height);
-
+			
 			
 			for(BackgroundController bc : bgGears){
 				bc.draw(dt, batch, this);
@@ -205,10 +208,20 @@ public class GameScreen implements Screen {
 					levels[i].draw(dt, batch, this);
 				}
 	
-			}
+			}			
 			
 			//draw player
 			player.draw(dt, batch, this);
+			
+			
+			//draw hp bar
+			shapeRenderer.begin(ShapeRenderer.ShapeType.FilledRectangle);
+			shapeRenderer.setColor(Color.WHITE);
+			shapeRenderer.filledRect(player.model.getX()-(Constants.SCREEN_WIDTH/21.5f), player.model.getY()+(Constants.SCREEN_HEIGHT/25f), 20f, 3f);
+			shapeRenderer.setColor(Color.RED);
+			shapeRenderer.filledRect(player.model.getX()-(Constants.SCREEN_WIDTH/21.5f), player.model.getY()+(Constants.SCREEN_HEIGHT/25f), 20f*((ColliderObject)player.model).getHp()/100, 3f);
+			shapeRenderer.end();
+			
 			
 			shapeRenderer.begin(ShapeType.Circle); 	
 			{
