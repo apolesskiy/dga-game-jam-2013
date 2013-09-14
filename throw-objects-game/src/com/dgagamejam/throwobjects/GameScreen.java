@@ -27,8 +27,6 @@ public class GameScreen implements Screen {
 	
 	Game game;
 	
-	//doodad list
-	
 	//player projectile list
 	
 	//enemy/object list
@@ -37,9 +35,10 @@ public class GameScreen implements Screen {
 	
 	LevelSegment[] levels;
 
-	HashSet<LevelTransition> levelTransitions = new HashSet<LevelTransition>(20);	
-	
 	HashSet<BackgroundController> bgGears;
+
+	HashSet<DoodadController> doodads;
+	
 	boolean spawnGear;
 
 	public ShapeRenderer shapeRenderer;
@@ -61,6 +60,9 @@ public class GameScreen implements Screen {
 		
 		imageLibrary = new TextureAtlas("data/images/img.pack");
 		
+		//initialize factories
+		BackgroundFactory.initialize(this);
+		
 		//
 		shapeRenderer = new ShapeRenderer();		
 		
@@ -75,8 +77,8 @@ public class GameScreen implements Screen {
 		levels[startLevel] = new LevelSegment(0f, (float)(random.nextInt(200)+200), startLevel);
 		levels[startLevel+1] = new LevelSegment(0f, (float)(100), startLevel+1);
 		
-		levels[startLevel].transitions.add(new LevelTransition(50, true));
-		levels[startLevel+1].transitions.add(new LevelTransition(100, false));
+		levels[startLevel].addLevelTransition(50, true);
+		levels[startLevel+1].addLevelTransition(100, false);
 		
 		VehicleObject playercar = new VehicleObject(10f, Constants.LEVEL_HEIGHT*startLevel+1f, new Rectangle(-3,0,6,2), startLevel);
 		
@@ -97,24 +99,44 @@ public class GameScreen implements Screen {
 		player.update(dt, this);
 		
 		//spawn gears
-		if(spawnGear && random.nextFloat()>0.90f){
-			BackgroundObject g = new BackgroundObject(player.model.x + 80f, random.nextInt((int)(Constants.LEVEL_COUNT * Constants.LEVEL_HEIGHT)));
-			BackgroundController gear = new BackgroundController(g);
-			gear.getModel().rotationRate = 90-random.nextInt(180);
-			gear.getModel().scale = random.nextFloat() + 0.5f;
-			bgGears.add(gear);
-		}
-		
-		Iterator<BackgroundController> iter = bgGears.iterator();
-		BackgroundController bgo;
-		while(iter.hasNext()) {
-			bgo = iter.next();
-			if(player.model.x - bgo.model.x > 1000) {
-				iter.remove();
-			} else {
-				bgo.update(dt, this);
+		{
+			float spawnChance = 0.05f * player.getModel().velocity * dt;
+			if(random.nextFloat() < spawnChance) {
+				float spawnScale = ((float)random.nextInt(8)) / 2f;
+				float spawnY = player.getModel().y + (random.nextInt(Constants.SCREEN_HEIGHT) - Constants.SCREEN_HEIGHT / 2) / 10f;
+				float spawnX = player.getModel().x + 80;
+				BackgroundFactory.createBackgroundGear(this, spawnX, spawnY, spawnScale);
+				
 			}
 		}
+
+		//update gears
+		{
+			Iterator<BackgroundController> iter = bgGears.iterator();
+			BackgroundController bgo;
+			while(iter.hasNext()) {
+				bgo = iter.next();
+				if(player.model.x - bgo.model.x > Constants.OBJECT_DESPAWN_DISTANCE) {
+					iter.remove();
+				} else {
+					bgo.update(dt, this);
+				}
+			}
+		}
+		
+		//update doodads (NOT collision)
+		/*{
+			Iterator<DoodadController> iter = doodads.iterator();
+			DoodadController d;
+			while(iter.hasNext()) {
+				d = iter.next();
+				if(player.model.x - d.model.x > 800) {
+					iter.remove();
+				} else {
+					d.update(dt, this);
+				}
+			}
+		}*/
 	}
 	
 	public void draw(float dt) {

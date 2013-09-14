@@ -4,10 +4,10 @@ import com.badlogic.gdx.math.Vector2;
 
 public abstract class GameObject {
 
-	float x, y;
+	float x, y, rotation, scale;
 	
-	public GameObject(float x, float y) {
-		this.x = x; this.y = y;
+	public GameObject(float x, float y, float rotation, float scale) {
+		this.x = x; this.y = y; this.rotation = rotation; this.scale = scale;
 	}
 
 	public float getX() {
