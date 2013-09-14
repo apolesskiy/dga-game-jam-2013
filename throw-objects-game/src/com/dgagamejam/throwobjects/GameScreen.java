@@ -35,8 +35,11 @@ public class GameScreen implements Screen {
 	
 	LevelSegment[] levels;
 
-	HashSet<LevelTransition> levelTransitions = new HashSet<LevelTransition>(20);
+	HashSet<LevelTransition> levelTransitions = new HashSet<LevelTransition>(20);	
 	
+	HashSet<BackgroundController> bgGears;
+	boolean spawnGear;
+
 	public ShapeRenderer shapeRenderer;
 	
 	public GameScreen(Game game) {
@@ -53,7 +56,10 @@ public class GameScreen implements Screen {
 		camera = new OrthographicCamera(w/10, h/10);
 		
 		//
-		shapeRenderer = new ShapeRenderer();
+		shapeRenderer = new ShapeRenderer();		
+		
+		bgGears = new HashSet<BackgroundController>(20);
+		spawnGear = false;	
 		
 		//level and objects init
 		levels = new LevelSegment[Constants.LEVEL_COUNT];
@@ -114,6 +120,21 @@ public class GameScreen implements Screen {
 			}	
 			shapeRenderer.end();
 		}
+		
+		//spawn gears
+		if(spawnGear){
+			BackgroundObject g = new BackgroundObject(random.nextInt(Constants.SCREEN_WIDTH), random.nextInt(Constants.SCREEN_HEIGHT));
+			BackgroundController gear = new BackgroundController(g);
+			bgGears.add(gear);
+		}
+		
+		for(BackgroundController bc : bgGears){
+			bc.draw(dt, batch, this);
+		}	
+		
+		//draw player
+		player.draw(dt, batch, this);
+		
 		batch.end();
 	}
 
