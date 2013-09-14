@@ -10,23 +10,30 @@ background
   orig: 700, 420
   offset: 0, 0
   index: -1
+tank
+  rotate: false
+  xy: 703, 274
+  size: 256, 147
+  orig: 256, 147
+  offset: 0, 0
+  index: -1
 Gear1
   rotate: false
-  xy: 703, 293
+  xy: 703, 144
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: -1
 Gear2
   rotate: false
-  xy: 703, 163
+  xy: 703, 14
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: -1
 Gear3
   rotate: false
-  xy: 833, 293
+  xy: 833, 144
   size: 128, 128
   orig: 128, 128
   offset: 0, 0

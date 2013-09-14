@@ -11,13 +11,14 @@ public class TextureView extends GameObjectView {
 	}
 
 	TextureRegion texture;
-
+	
 	@Override
 	public void update(float dt, GameScreen screen) {}
 
 	@Override
 	public void draw(float dt, SpriteBatch sb, GameScreen screen) {
-		sb.draw(texture, getModel().x, getModel().y, texture.getRegionWidth()/20, texture.getRegionHeight()/20, 
+		sb.draw(texture, getModel().x - texture.getRegionWidth()/20, getModel().y - texture.getRegionHeight()/20, 
+				texture.getRegionWidth()/20, texture.getRegionHeight()/20, 
 				texture.getRegionWidth()/10, texture.getRegionHeight()/10, getModel().scale, getModel().scale, getModel().rotation);
 	}
 	

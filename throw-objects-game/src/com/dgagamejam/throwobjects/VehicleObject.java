@@ -12,35 +12,8 @@ public class VehicleObject extends ColliderObject {
 	float acceleration = 12f; 	//10's of px/sec/sec
 	float velocity = 0f; 		//10's of px/sec
 	
-	public VehicleObject(float x, float y, Rectangle collision, int level) {
-		super(x, y, 1f, 0f, collision, level);
-	}
-	
-	public GameObjectView createView(VehicleController c) {
-		return new VehicleObjectView(c);
-	}
-	
-}
-
-class VehicleObjectView extends GameObjectView {
-	
-	public VehicleObjectView(VehicleController ctr) {
-		super(ctr);
-	}
-	
-	ShapeRenderer sr = new ShapeRenderer();
-	
-	public void draw (float dt, SpriteBatch sb, GameScreen screen) {
-		
-		screen.shapeRenderer.begin(ShapeRenderer.ShapeType.FilledRectangle);
-		VehicleObject veh = (VehicleObject)getModel();
-		screen.shapeRenderer.setColor(Color.BLUE);
-		screen.shapeRenderer.filledRect(veh.x + veh.collision.x, veh.y+veh.collision.y, veh.collision.width, veh.collision.height);
-		screen.shapeRenderer.end();
-	}
-
-	@Override
-	public void update(float dt, GameScreen screen) {
+	public VehicleObject(float x, float y, float scale, Rectangle collision, int level) {
+		super(x, y, 0f, scale, collision, level);
 	}
 	
 }

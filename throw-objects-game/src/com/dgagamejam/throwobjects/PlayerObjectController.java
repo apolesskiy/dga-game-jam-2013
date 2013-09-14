@@ -4,11 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 
 public class PlayerObjectController extends VehicleController {
-
-	public PlayerObjectController(VehicleObject o) {
-		super(o);
-	}
-
 	
 	public void update(float dt, GameScreen screen) {
 		super.update(dt, screen);

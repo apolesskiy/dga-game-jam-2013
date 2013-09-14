@@ -72,6 +72,7 @@ public class GameScreen implements Screen {
 		
 		//initialize factories
 		BackgroundFactory.initialize(this);
+		VehicleFactory.initialize(this);
 		
 		//
 		shapeRenderer = new ShapeRenderer();		
@@ -90,9 +91,7 @@ public class GameScreen implements Screen {
 		levels[startLevel].addLevelTransition(50, true);
 		levels[startLevel+1].addLevelTransition(100, false);
 		
-		VehicleObject playercar = new VehicleObject(10f, Constants.LEVEL_HEIGHT*startLevel+1f, new Rectangle(-3,0,6,2), startLevel);
-		
-		player = new PlayerObjectController(playercar);
+		player = (PlayerObjectController)VehicleFactory.createTank(this, startLevel, 0f, true);
 		
 		((VehicleObject)player.model).velocity = 2f;
 		
