@@ -10,7 +10,6 @@ background
   orig: 700, 420
   offset: 0, 0
   index: -1
-<<<<<<< HEAD
 tank
   rotate: false
   xy: 703, 274
@@ -21,33 +20,20 @@ tank
 Gear1
   rotate: false
   xy: 703, 144
-=======
-Gear1
-  rotate: false
-  xy: 703, 293
->>>>>>> 3b0466aef74c46d7895d9d45d5f077b2abc27f2d
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: -1
 Gear2
   rotate: false
-<<<<<<< HEAD
   xy: 703, 14
-=======
-  xy: 703, 163
->>>>>>> 3b0466aef74c46d7895d9d45d5f077b2abc27f2d
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: -1
 Gear3
   rotate: false
-<<<<<<< HEAD
   xy: 833, 144
-=======
-  xy: 833, 293
->>>>>>> 3b0466aef74c46d7895d9d45d5f077b2abc27f2d
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
