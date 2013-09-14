@@ -8,8 +8,8 @@ public class Main {
 		LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
 		cfg.title = "throw-objects-game";
 		cfg.useGL20 = false;
-		cfg.width = 480;
-		cfg.height = 320;
+		cfg.width = Constants.SCREEN_WIDTH;
+		cfg.height = Constants.SCREEN_HEIGHT;
 		
 		new LwjglApplication(new ThrowObjectsGame(), cfg);
 	}
