@@ -7,16 +7,19 @@ import com.badlogic.gdx.math.Rectangle;
 
 public class VehicleObject extends ColliderObject {
 	
-	float velocity = 0f; // px/second
+	float maxVelocity = 30f;	//10's of px/sec
+	float brake = 3f; 			//10's of px/sec/sec
+	float acceleration = 5f; 	//10's of px/sec/sec
+	float velocity = 0f; 		//10's of px/sec
 	
-	public VehicleObject(float x, float y, Rectangle collision) {
-		super(x, y, collision);
+	public VehicleObject(float x, float y, Rectangle collision, int level) {
+		super(x, y, collision, level);
 	}
 	
 	public GameObjectView createView(VehicleController c) {
 		return new VehicleObjectView(c);
 	}
-
+	
 }
 
 class VehicleObjectView extends GameObjectView {

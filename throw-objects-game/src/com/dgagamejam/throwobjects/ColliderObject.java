@@ -1,20 +1,21 @@
 package com.dgagamejam.throwobjects;
 
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 
 public abstract class ColliderObject extends GameObject {
 
-	public ColliderObject(float x, float y, Rectangle collision) {
+	public ColliderObject(float x, float y, Rectangle collision, int level) {
 		super(x, y);
 		
 		this.collision = collision;
+		this.level = level;
 		// TODO Auto-generated constructor stub
 	}
 
 	Rectangle collision;
 	
 	int level;
+	float verticalVelocity = 0f;
 
 	public Rectangle getCollision() {
 		return collision;

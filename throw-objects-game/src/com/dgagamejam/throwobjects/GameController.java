@@ -18,4 +18,8 @@ public abstract class GameController {
 			view.draw(dt, sb, screen);
 		}
 	}
+	
+	public GameObject getModel() { return model; }
+	
+	public GameObjectView getView() { return view; }
 }
