@@ -71,7 +71,7 @@ public class GameScreen implements Screen {
 		imageLibrary = new TextureAtlas("data/images/img.pack");
 		//audio
 		AudioManager audioManager = new AudioManager();
-		audioManager.play("data/Industrial Revolution.mp3");
+		audioManager.play("data/77738__timbre__cinematic-ticking-clock-heavy-gears.wav");
 		//initialize factories
 		BackgroundFactory.initialize(this);
 		DoodadFactory.initialize(this);
