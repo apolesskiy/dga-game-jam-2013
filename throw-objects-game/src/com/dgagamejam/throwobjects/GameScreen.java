@@ -15,7 +15,6 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
-import com.badlogic.gdx.math.Rectangle;
 
 public class GameScreen implements Screen {
 
@@ -56,6 +55,10 @@ public class GameScreen implements Screen {
 	float width;
 	float height;
 	
+	
+	
+	ProjectileObject p;
+	ProjectileController pc; 
 	
 	
 	
@@ -100,6 +103,11 @@ public class GameScreen implements Screen {
 		height = bg.getRegionHeight()/10;
 		bgX = player.model.getX() - (width/2);
 		bgY = player.model.getY() - (height/2);
+		
+		
+		
+		p = new ProjectileObject(player.model.getX(),player.model.getY(),0,1 );
+		pc = new ProjectileController(p);
 		
 	}
 	
@@ -166,6 +174,8 @@ public class GameScreen implements Screen {
 			bgY -= height;
 		}
 		
+		pc.update(dt, this);
+		
 	}
 	
 	public void draw(float dt) {
@@ -178,7 +188,9 @@ public class GameScreen implements Screen {
 		{
 			//draw everything (in order!)
 			
+			pc.draw(dt, batch, this);
 			
+			/*
 			//draw background
 			batch.draw(bg, bgX, bgY, width, height);
 			batch.draw(bg, bgX + width - 0.1f, bgY, width, height);
@@ -195,7 +207,7 @@ public class GameScreen implements Screen {
 			batch.draw(bg, bgX + width - 0.1f, bgY - 2 * height + 0.1f, width, height);
 			batch.draw(bg, bgX - width + 0.1f, bgY + 2 * height - 0.1f, width, height);
 			batch.draw(bg, bgX - width + 0.1f, bgY - 2 * height + 0.1f, width, height);
-			
+			*/
 			
 			for(BackgroundController bc : bgGears){
 				bc.draw(dt, batch, this);
