@@ -42,6 +42,14 @@ public class LevelSegmentGenerator {
 				generateLevelSegment(targetLevel, 50);
 		}
 		
+		//randomly pick an empty level and start a segment
+		if(screen.random.nextFloat()>0.97) {
+			int targetLv = screen.random.nextInt(Constants.LEVEL_COUNT);
+			if(!LevelSegment.exists(targetLv, screen)) {
+				generateLevelSegment(targetLv, 30);
+			}
+		}
+		
 	}
 
 
@@ -70,26 +78,11 @@ public class LevelSegmentGenerator {
 		
 		float len = l.end - l.start - 2*Constants.ASCENT_LENGTH;
 		while(len > 2*Constants.ASCENT_LENGTH) {
-			float offset = Constants.ASCENT_LENGTH*2+screen.random.nextInt((int)Constants.ASCENT_LENGTH);
+			float offset = Constants.ASCENT_LENGTH+screen.random.nextInt((int)Constants.ASCENT_LENGTH);
 			len -= offset;
 			float pos = l.start + len;
-			boolean canUp = true, canDown = true;
-			if(!LevelSegment.exists(level+1, screen) || !screen.levels[level+1].isOnSegment(pos)) {
-				canUp = false;
-			}
-			if(!LevelSegment.exists(level-1, screen) || !screen.levels[level-1].isOnSegment(pos)) {
-				canDown = false;
-			}
-			boolean up;
-			if(!canUp) {
-				if(!canDown) 
-					break;
-				up = false;
-			} else {
-				if(!canDown) 
-					up = true;
-				up = screen.random.nextBoolean();
-			}
+
+			boolean up = screen.random.nextBoolean();
 
 			l.addLevelTransition(pos, up);
 		}

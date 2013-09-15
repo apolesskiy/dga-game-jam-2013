@@ -56,6 +56,7 @@ public class GameScreen implements Screen {
 	float width;
 	float height;
 	
+
 	@Override
 	public void show() {
 		
@@ -124,6 +125,17 @@ public class GameScreen implements Screen {
 			}
 		}
 
+		//spawn doodads
+		{
+			float spawnChance = 0.1f * player.getModel().velocity * dt;
+			if(random.nextFloat() < spawnChance) {
+				float spawnY = player.getModel().y + Constants.SCREEN_HEIGHT/20;
+				float spawnX = player.getModel().x + random.nextInt(Constants.SCREEN_WIDTH/20);
+				DoodadFactory.createDoodad(this, spawnX, spawnY);
+				
+			}
+		}
+		
 		//update gears
 		{
 			Iterator<BackgroundController> iter = bgGears.iterator();
@@ -144,7 +156,7 @@ public class GameScreen implements Screen {
 			DoodadController d;
 			while(iter.hasNext()) {
 				d = iter.next();
-				if(player.model.x - d.model.x > 800) {
+				if(player.model.x - d.model.x > Constants.SCREEN_WIDTH/20) {
 					iter.remove();
 				} else {
 					d.update(dt, this);
@@ -177,7 +189,6 @@ public class GameScreen implements Screen {
 			//draw everything (in order!)
 			
 			
-			/*
 			//draw background
 			batch.draw(bg, bgX, bgY, width, height);
 			batch.draw(bg, bgX + width - 0.1f, bgY, width, height);
@@ -194,7 +205,7 @@ public class GameScreen implements Screen {
 			batch.draw(bg, bgX + width - 0.1f, bgY - 2 * height + 0.1f, width, height);
 			batch.draw(bg, bgX - width + 0.1f, bgY + 2 * height - 0.1f, width, height);
 			batch.draw(bg, bgX - width + 0.1f, bgY - 2 * height + 0.1f, width, height);
-			*/
+			
 			
 			for(BackgroundController bc : bgGears){
 				bc.draw(dt, batch, this);
