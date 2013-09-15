@@ -8,7 +8,7 @@ public final class Constants {
 	public static final float LEVEL_HEIGHT = 10f;
 	public static final int LEVEL_COUNT = 20;
 	
-	public static final float GRAVITY = -10f;
+	public static final float GRAVITY = -15f;
 	
 	public static final float ASCENT_LENGTH = 30f;
 	public static final float TRANSITION_EPSILON = 1f;

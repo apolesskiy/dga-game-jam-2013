@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 
 public class LevelSegment {
 
-	static String[] textureNames = new String[] { "Path1", "Path2" };
+	static String[] textureNames = new String[] { "Path1", "Path2", "Path3"};
 	
 	static String rampName = "ramp";
 	
@@ -18,6 +18,11 @@ public class LevelSegment {
 	float start, end;
 	
 	long drawSeed;
+	
+	public static boolean exists(int level, GameScreen screen) {
+		return level > -1 && level < Constants.LEVEL_COUNT && 
+				screen.levels[level] != null && screen.levels[level].end > screen.player.model.x - Constants.SCREEN_WIDTH/20; 
+	}
 	
 	public static void initialize(GameScreen screen) {
 		int ctr = 0;
@@ -71,7 +76,7 @@ public class LevelSegment {
 			if(t == null) continue;
 			float x = t.pos;
 			float y = (t.up ? index : index-1)*Constants.LEVEL_HEIGHT;
-			sb.draw(ramp, x, y, 0, 0, Constants.ASCENT_LENGTH, Constants.LEVEL_HEIGHT, (t.up?1f:-1f), 1f, 0f);
+			sb.draw(ramp, x + (t.up ? 0 : Constants.ASCENT_LENGTH), y-1, 0, 0, Constants.ASCENT_LENGTH, Constants.LEVEL_HEIGHT, (t.up?1f:-1f), 1f, 0f);
 		}
 	}
 }

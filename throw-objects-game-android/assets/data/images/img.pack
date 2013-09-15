@@ -59,3 +59,17 @@ Path2
   orig: 128, 128
   offset: 0, 0
   index: -1
+Path3
+  rotate: false
+  xy: 517, 261
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: -1
+Path4
+  rotate: false
+  xy: 703, 404
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: -1

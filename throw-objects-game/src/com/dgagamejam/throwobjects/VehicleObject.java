@@ -1,14 +1,11 @@
 package com.dgagamejam.throwobjects;
 
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 
 public class VehicleObject extends ColliderObject {
 	
-	float maxVelocity = 36f;	//10's of px/sec
-	float brake = 3f; 			//10's of px/sec/sec
+	float maxVelocity = 45f;	//10's of px/sec
+	float brake = 15f; 			//10's of px/sec/sec
 	float acceleration = 12f; 	//10's of px/sec/sec
 	float velocity = 0f; 		//10's of px/sec
 	

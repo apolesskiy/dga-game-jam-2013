@@ -107,6 +107,8 @@ public class GameScreen implements Screen {
 	
 	public void update(float dt) {
 		
+		levelGen.update(dt);
+		
 		//update player
 		player.update(dt, this);
 		
