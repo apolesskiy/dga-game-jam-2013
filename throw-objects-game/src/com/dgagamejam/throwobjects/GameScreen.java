@@ -40,6 +40,8 @@ public class GameScreen implements Screen {
 
 	HashSet<DoodadController> doodads;
 	
+	HashSet<ProjectileController> rockets;
+	
 	boolean spawnGear;
 
 	public ShapeRenderer shapeRenderer;
@@ -58,8 +60,8 @@ public class GameScreen implements Screen {
 	
 	
 	
-	ProjectileObject p;
-	ProjectileController pc; 
+	//ProjectileObject p;
+	//ProjectileController pc; 
 	
 	
 	
@@ -86,7 +88,8 @@ public class GameScreen implements Screen {
 		shapeRenderer = new ShapeRenderer();		
 		
 		bgGears = new HashSet<BackgroundController>(20);
-		doodads = new HashSet<DoodadController>(20);	
+		doodads = new HashSet<DoodadController>(20);
+		rockets = new HashSet<ProjectileController>(20);
 		
 		//level and objects init
 		levels = new LevelSegment[Constants.LEVEL_COUNT];
@@ -101,10 +104,6 @@ public class GameScreen implements Screen {
 		bgX = player.model.getX() - (width/2);
 		bgY = player.model.getY() - (height/2);
 		
-		
-		
-		p = new ProjectileObject(player.model.getX(),player.model.getY(),0,1 );
-		pc = new ProjectileController(p);
 		
 	}
 	
@@ -161,6 +160,15 @@ public class GameScreen implements Screen {
 			}
 		}
 		
+		{
+			Iterator<ProjectileController> iter = rockets.iterator();
+			ProjectileController r;
+			while(iter.hasNext()) {
+				r = iter.next();
+				r.update(dt, this);
+			}
+		}
+		
 		
 		//update background
 		if((player.model.getX() - bgX) > width){
@@ -173,8 +181,7 @@ public class GameScreen implements Screen {
 			bgY -= height;
 		}
 		
-		pc.update(dt, this);
-		
+
 	}
 	
 	public void draw(float dt) {
@@ -186,10 +193,7 @@ public class GameScreen implements Screen {
 		batch.begin();
 		{
 			//draw everything (in order!)
-			
-			pc.draw(dt, batch, this);
-			
-			/*
+		
 			//draw background
 			batch.draw(bg, bgX, bgY, width, height);
 			batch.draw(bg, bgX + width - 0.1f, bgY, width, height);
@@ -206,11 +210,15 @@ public class GameScreen implements Screen {
 			batch.draw(bg, bgX + width - 0.1f, bgY - 2 * height + 0.1f, width, height);
 			batch.draw(bg, bgX - width + 0.1f, bgY + 2 * height - 0.1f, width, height);
 			batch.draw(bg, bgX - width + 0.1f, bgY - 2 * height + 0.1f, width, height);
-			*/
+			
 			
 			for(BackgroundController bc : bgGears){
 				bc.draw(dt, batch, this);
-			}	
+			}
+			
+			for(ProjectileController rocket : rockets){
+				rocket.draw(dt, batch, this);
+			}
 			
 			//draw levels + transitions
 			for(int i = Constants.LEVEL_COUNT-1; i>=0; i--) {

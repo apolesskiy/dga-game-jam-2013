@@ -65,5 +65,8 @@ public class VehicleController extends ColliderController {
 	
 	public void fire(GameScreen screen) {
 		//todo
+		ProjectileObject rocket = new ProjectileObject(screen.player.model.getX(), screen.player.model.getY(), 0, 1);
+		ProjectileController rocketc = new ProjectileController(rocket);
+		screen.rockets.add(rocketc);
 	}
 }

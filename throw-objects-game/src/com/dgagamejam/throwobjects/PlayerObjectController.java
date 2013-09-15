@@ -31,6 +31,11 @@ public class PlayerObjectController extends VehicleController {
 		if(Gdx.input.isKeyPressed(Input.Keys.S)) {
 			levelDown(screen);
 		}
+		if(Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
+			fire(screen);
+		}
+		
+		
 		//todo weapons
 	
 		
