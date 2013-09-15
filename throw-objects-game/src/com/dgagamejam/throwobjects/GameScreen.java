@@ -56,13 +56,6 @@ public class GameScreen implements Screen {
 	float width;
 	float height;
 	
-	
-	
-	ProjectileObject p;
-	ProjectileController pc; 
-	
-	
-	
 	@Override
 	public void show() {
 		
@@ -73,7 +66,9 @@ public class GameScreen implements Screen {
 		camera = new OrthographicCamera(w/10, h/10);
 		
 		imageLibrary = new TextureAtlas("data/images/img.pack");
-		
+		//audio
+		AudioManager audioManager = new AudioManager();
+		audioManager.play("data/Industrial Revolution.mp3");
 		//initialize factories
 		BackgroundFactory.initialize(this);
 		DoodadFactory.initialize(this);
@@ -101,10 +96,6 @@ public class GameScreen implements Screen {
 		bgX = player.model.getX() - (width/2);
 		bgY = player.model.getY() - (height/2);
 		
-		
-		
-		p = new ProjectileObject(player.model.getX(),player.model.getY(),0,1 );
-		pc = new ProjectileController(p);
 		
 	}
 	
@@ -173,8 +164,6 @@ public class GameScreen implements Screen {
 			bgY -= height;
 		}
 		
-		pc.update(dt, this);
-		
 	}
 	
 	public void draw(float dt) {
@@ -187,7 +176,6 @@ public class GameScreen implements Screen {
 		{
 			//draw everything (in order!)
 			
-			pc.draw(dt, batch, this);
 			
 			/*
 			//draw background

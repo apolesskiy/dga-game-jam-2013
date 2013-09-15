@@ -1,3 +1,6 @@
 d:war/
 d:data
+d:data/images
+t:data/images/img.pack
+i:data/images/img.png
 i:data/libgdx.png
