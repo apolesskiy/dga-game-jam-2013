@@ -1,0 +1,75 @@
+
+img.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+background
+  rotate: false
+  xy: 1, 391
+  size: 700, 420
+  orig: 700, 420
+  offset: 0, 0
+  index: -1
+ramp
+  rotate: false
+  xy: 1, 261
+  size: 384, 128
+  orig: 384, 128
+  offset: 0, 0
+  index: -1
+tank
+  rotate: false
+  xy: 703, 664
+  size: 256, 147
+  orig: 256, 147
+  offset: 0, 0
+  index: -1
+Gear1
+  rotate: false
+  xy: 1, 131
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: -1
+Gear2
+  rotate: false
+  xy: 387, 261
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: -1
+Gear3
+  rotate: false
+  xy: 703, 534
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: -1
+Path1
+  rotate: false
+  xy: 1, 1
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: -1
+Path2
+  rotate: false
+  xy: 131, 131
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: -1
+Path3
+  rotate: false
+  xy: 517, 261
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: -1
+Path4
+  rotate: false
+  xy: 703, 404
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: -1
