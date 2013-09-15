@@ -162,11 +162,9 @@ public class GameScreen implements Screen {
 					d.update(dt, this);
 					if(d.getModel().collides((ColliderObject)player.model) && !d.getModel().destroyed) {
 						player.getModel().hp -= 5;
-						System.out.println(d.getModel().destroyed);
 						d.getModel().destroyed = true;
 						iter.remove();
 						if(player.getModel().hp <= 0) {
-							System.out.println("YOU ARE DEAD");
 							player.getModel().maxVelocity = 0;
 							player.getModel().velocity = 0;
 							player.getModel().destroyed = true;
