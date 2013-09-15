@@ -25,7 +25,7 @@ public class ColliderController extends GameController {
 				(!currentLevel.isOnSegment(getModel().x) && !currentLevel.isOnSegment(getModel().x + Constants.ASCENT_LENGTH)))) {
 			//find the lowest available level
 			lowest--;
-			currentLevel = (lowest >= 0 ? screen.levels[lowest] : null);
+			currentLevel = (lowest >= 0 && lowest < 20 ? screen.levels[lowest] : null);
 		}
 		getModel().level = lowest;
 		//if we are more than 1 level's worth above our level, check above levels for landing.
@@ -54,7 +54,7 @@ public class ColliderController extends GameController {
 			getModel().y = getModel().level * Constants.LEVEL_HEIGHT + getModel().collision.height/2f;
 			//take fall damage if velocity is high enough
 			if(getModel().verticalVelocity > getModel().fallDamageThreshold) {
-				getModel().hp -= (int)(getModel().verticalVelocity - getModel().fallDamageThreshold);
+			//	getModel().hp -= (int)(getModel().verticalVelocity - getModel().fallDamageThreshold);
 			}
 			getModel().verticalVelocity = 0;
 

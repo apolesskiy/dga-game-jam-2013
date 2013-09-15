@@ -15,8 +15,6 @@ public class LevelSegmentGenerator {
 		
 		screen.levels[startLevel] = new LevelSegment(0f, (screen.random.nextInt(20)+40), startLevel);
 		
-		DoodadFactory.createDoodad(screen, 50, (startLevel)*Constants.LEVEL_HEIGHT + 8);
-		
 		screen.player = (PlayerObjectController)VehicleFactory.createTank(screen, startLevel, 0f, true);
 		
 		((VehicleObject)screen.player.model).velocity = 20f;

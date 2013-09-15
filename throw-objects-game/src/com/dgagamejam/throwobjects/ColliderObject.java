@@ -42,7 +42,14 @@ public class ColliderObject extends GameObject {
 	}
 	
 	public boolean collides (ColliderObject other) {
-		return collision.overlaps(other.collision) && !destroyed &&!other.destroyed;
+		
+		Rectangle col = new Rectangle(collision);
+		Rectangle othercol = new Rectangle(other.collision);
+		col.x+=x;
+		col.y+=y;
+		othercol.x+=other.x;
+		othercol.y+=other.y;
+		return col.overlaps(othercol) && !destroyed &&!other.destroyed;
 	}
 	
 }
