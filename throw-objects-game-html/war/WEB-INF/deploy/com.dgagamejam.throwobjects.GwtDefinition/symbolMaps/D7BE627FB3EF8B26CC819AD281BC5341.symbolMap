@@ -1008,7 +1008,7 @@ k,com.dgagamejam.throwobjects.GameObject::y,com.dgagamejam.throwobjects.GameObje
 iv,,com.dgagamejam.throwobjects.GameObjectView,,com/dgagamejam/throwobjects/GameObjectView.java,5,-1
 b,com.dgagamejam.throwobjects.GameObjectView::controller,com.dgagamejam.throwobjects.GameObjectView,controller,com/dgagamejam/throwobjects/GameObjectView.java,7,-1
 jv,,com.dgagamejam.throwobjects.GameScreen,,com/dgagamejam/throwobjects/GameScreen.java,19,-1
-kv,com.dgagamejam.throwobjects.GameScreen::$draw(Lcom/dgagamejam/throwobjects/GameScreen;F)V,com.dgagamejam.throwobjects.GameScreen,$draw,com/dgagamejam/throwobjects/GameScreen.java,168,0
+kv,com.dgagamejam.throwobjects.GameScreen::$draw(Lcom/dgagamejam/throwobjects/GameScreen;F)V,com.dgagamejam.throwobjects.GameScreen,$draw,com/dgagamejam/throwobjects/GameScreen.java,179,0
 lv,com.dgagamejam.throwobjects.GameScreen::$render(Lcom/dgagamejam/throwobjects/GameScreen;F)V,com.dgagamejam.throwobjects.GameScreen,$render,com/dgagamejam/throwobjects/GameScreen.java,102,0
 mv,com.dgagamejam.throwobjects.GameScreen::$show(Lcom/dgagamejam/throwobjects/GameScreen;)V,com.dgagamejam.throwobjects.GameScreen,$show,com/dgagamejam/throwobjects/GameScreen.java,61,0
 nv,com.dgagamejam.throwobjects.GameScreen::$update(Lcom/dgagamejam/throwobjects/GameScreen;F)V,com.dgagamejam.throwobjects.GameScreen,$update,com/dgagamejam/throwobjects/GameScreen.java,107,0
