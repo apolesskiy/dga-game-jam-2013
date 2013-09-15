@@ -56,7 +56,7 @@ public class GameScreen implements Screen {
 	float width;
 	float height;
 	
-	
+
 	@Override
 	public void show() {
 		
@@ -67,7 +67,9 @@ public class GameScreen implements Screen {
 		camera = new OrthographicCamera(w/10, h/10);
 		
 		imageLibrary = new TextureAtlas("data/images/img.pack");
-		
+		//audio
+		AudioManager audioManager = new AudioManager();
+		audioManager.play("data/Industrial Revolution.mp3");
 		//initialize factories
 		BackgroundFactory.initialize(this);
 		DoodadFactory.initialize(this);
