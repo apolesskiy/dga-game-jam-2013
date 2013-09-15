@@ -68,7 +68,9 @@ public class GameScreen implements Screen {
 		camera = new OrthographicCamera(w/10, h/10);
 		
 		imageLibrary = new TextureAtlas("data/images/img.pack");
-		
+		//audio
+		AudioManager audioManager = new AudioManager();
+		audioManager.play("data/Industrial Revolution.mp3");
 		//initialize factories
 		BackgroundFactory.initialize(this);
 		DoodadFactory.initialize(this);
@@ -121,7 +123,6 @@ public class GameScreen implements Screen {
 				float spawnY = player.getModel().y + (random.nextInt(Constants.SCREEN_HEIGHT) - Constants.SCREEN_HEIGHT / 2) / 10f;
 				float spawnX = player.getModel().x + 80;
 				BackgroundFactory.createBackgroundGear(this, spawnX, spawnY, spawnScale);
-				
 			}
 		}
 
@@ -150,16 +151,29 @@ public class GameScreen implements Screen {
 			}
 		}
 		
-		//update doodads (NOT collision)
+		//update doodads
 		{
 			Iterator<DoodadController> iter = doodads.iterator();
 			DoodadController d;
 			while(iter.hasNext()) {
 				d = iter.next();
-				if(player.model.x - d.model.x > Constants.SCREEN_WIDTH/20) {
+				if(player.model.x - d.model.x > Constants.SCREEN_WIDTH/20 || d.getModel().destroyed) {
+					d.getModel().destroyed = true;
 					iter.remove();
 				} else {
 					d.update(dt, this);
+					if(d.getModel().collides((ColliderObject)player.model) && !d.getModel().destroyed) {
+						player.getModel().hp -= 5;
+						System.out.println(d.getModel().destroyed);
+						d.getModel().destroyed = true;
+						iter.remove();
+						if(player.getModel().hp <= 0) {
+							System.out.println("YOU ARE DEAD");
+							player.getModel().maxVelocity = 0;
+							player.getModel().velocity = 0;
+							player.getModel().destroyed = true;
+						}
+					}
 				}
 			}
 		}
@@ -251,7 +265,9 @@ public class GameScreen implements Screen {
 			
 			//draw doodads
 			for(DoodadController d: doodads) {
-				d.draw(dt, batch, this);
+				if(!d.getModel().destroyed) {
+					d.draw(dt, batch, this);
+				}
 			}
 			
 			//draw player
