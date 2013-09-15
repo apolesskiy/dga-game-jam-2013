@@ -34,11 +34,13 @@ public class DoodadFactory {
 		
 		DoodadController gear = new DoodadController();
 		DoodadObject g = new DoodadObject(x, y, 0f, DOODAD_IMAGE_SCALE, DOODAD_COLLISION, (int)(y/Constants.LEVEL_HEIGHT));
+		//DoodadObject g = new DoodadObject(x, y, 0f, DOODAD_IMAGE_SCALE, new Rectangle(x,y,12,12), (int)(y/Constants.LEVEL_HEIGHT));
 		TextureView tv = new TextureView(gear, textures[screen.random.nextInt(textures.length)]);
 		
 		gear.model = g;
 		gear.view = tv;
 		tv.controller = gear;
+		g.verticalVelocity = -20f;
 		
 		screen.doodads.add(gear);
 		

@@ -58,13 +58,6 @@ public class GameScreen implements Screen {
 	float width;
 	float height;
 	
-	
-	
-	//ProjectileObject p;
-	//ProjectileController pc; 
-	
-	
-	
 	@Override
 	public void show() {
 		
@@ -132,6 +125,17 @@ public class GameScreen implements Screen {
 			}
 		}
 
+		//spawn doodads
+		{
+			float spawnChance = 0.1f * player.getModel().velocity * dt;
+			if(random.nextFloat() < spawnChance) {
+				float spawnY = player.getModel().y + Constants.SCREEN_HEIGHT/20;
+				float spawnX = player.getModel().x + random.nextInt(Constants.SCREEN_WIDTH/20);
+				DoodadFactory.createDoodad(this, spawnX, spawnY);
+				
+			}
+		}
+		
 		//update gears
 		{
 			Iterator<BackgroundController> iter = bgGears.iterator();
@@ -152,7 +156,7 @@ public class GameScreen implements Screen {
 			DoodadController d;
 			while(iter.hasNext()) {
 				d = iter.next();
-				if(player.model.x - d.model.x > 800) {
+				if(player.model.x - d.model.x > Constants.SCREEN_WIDTH/20) {
 					iter.remove();
 				} else {
 					d.update(dt, this);
@@ -165,7 +169,29 @@ public class GameScreen implements Screen {
 			ProjectileController r;
 			while(iter.hasNext()) {
 				r = iter.next();
-				r.update(dt, this);
+				if(((ProjectileObject)r.model).destroyed){
+					iter.remove();
+				}
+				else{
+					r.update(dt, this);
+				}
+			}
+		}
+		
+		{
+			Iterator<ProjectileController> iterRockets = rockets.iterator();
+			Iterator<DoodadController> iterDoodads = doodads.iterator();
+			ProjectileController r;
+			DoodadController d;
+			while(iterRockets.hasNext()) {
+				r = iterRockets.next();
+				while(iterDoodads.hasNext()){
+					d = iterDoodads.next();
+					if(d.getModel().collision.contains(r.getModel().getPosition().x, r.getModel().getPosition().y)){
+						doodads.remove(d);
+						rockets.remove(r);
+					}
+				}
 			}
 		}
 		
@@ -181,7 +207,6 @@ public class GameScreen implements Screen {
 			bgY -= height;
 		}
 		
-
 	}
 	
 	public void draw(float dt) {
@@ -193,7 +218,7 @@ public class GameScreen implements Screen {
 		batch.begin();
 		{
 			//draw everything (in order!)
-		
+
 			//draw background
 			batch.draw(bg, bgX, bgY, width, height);
 			batch.draw(bg, bgX + width - 0.1f, bgY, width, height);
@@ -216,10 +241,6 @@ public class GameScreen implements Screen {
 				bc.draw(dt, batch, this);
 			}
 			
-			for(ProjectileController rocket : rockets){
-				rocket.draw(dt, batch, this);
-			}
-			
 			//draw levels + transitions
 			for(int i = Constants.LEVEL_COUNT-1; i>=0; i--) {
 				if(levels[i] != null) {
@@ -236,6 +257,10 @@ public class GameScreen implements Screen {
 			//draw player
 			player.draw(dt, batch, this);
 			
+			
+			for(ProjectileController rocket : rockets){
+				rocket.draw(dt, batch, this);
+			}
 			
 			//draw hp bar
 			shapeRenderer.begin(ShapeRenderer.ShapeType.FilledRectangle);

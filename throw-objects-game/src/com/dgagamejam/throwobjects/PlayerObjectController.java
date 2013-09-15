@@ -5,6 +5,8 @@ import com.badlogic.gdx.Input;
 
 public class PlayerObjectController extends VehicleController {
 	
+	int counter = 0;
+	
 	public void update(float dt, GameScreen screen) {
 		super.update(dt, screen);
 		
@@ -31,8 +33,14 @@ public class PlayerObjectController extends VehicleController {
 		if(Gdx.input.isKeyPressed(Input.Keys.S)) {
 			levelDown(screen);
 		}
-		if(Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
-			fire(screen);
+		if(Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
+			if(counter == 0){
+				fire(screen);
+				counter = 10;
+			}
+			else{
+				counter--;
+			}
 		}
 		
 		
