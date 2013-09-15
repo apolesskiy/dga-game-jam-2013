@@ -1,5 +1,6 @@
 package com.dgagamejam.throwobjects;
 
+
 public class DoodadController extends ColliderController {
 
 	//TODO: return powerup on death
@@ -9,6 +10,4 @@ public class DoodadController extends ColliderController {
 		DoodadObject mdl = (DoodadObject)model;
 		mdl.destroyed = true;
 	}
-	
-	
 }
