@@ -39,6 +39,7 @@ public class DoodadFactory {
 		gear.model = g;
 		gear.view = tv;
 		tv.controller = gear;
+		g.verticalVelocity = -20f;
 		
 		screen.doodads.add(gear);
 		
