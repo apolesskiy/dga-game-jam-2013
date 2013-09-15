@@ -15,6 +15,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+import com.badlogic.gdx.math.Rectangle;
 
 public class GameScreen implements Screen {
 
@@ -164,11 +165,9 @@ public class GameScreen implements Screen {
 					d.update(dt, this);
 					if(d.getModel().collides((ColliderObject)player.model) && !d.getModel().destroyed) {
 						player.getModel().hp -= 5;
-						System.out.println(d.getModel().destroyed);
 						d.getModel().destroyed = true;
 						iter.remove();
 						if(player.getModel().hp <= 0) {
-							System.out.println("YOU ARE DEAD");
 							player.getModel().maxVelocity = 0;
 							player.getModel().velocity = 0;
 							player.getModel().destroyed = true;
@@ -201,9 +200,14 @@ public class GameScreen implements Screen {
 				r = iterRockets.next();
 				while(iterDoodads.hasNext()){
 					d = iterDoodads.next();
-					if(d.getModel().collision.contains(r.getModel().getPosition().x, r.getModel().getPosition().y)){
-						doodads.remove(d);
-						rockets.remove(r);
+					Rectangle rcol = new Rectangle(d.getModel().collision);
+					rcol.x+=d.getModel().x;
+					rcol.y+=d.getModel().y;
+					if(rcol.contains(r.getModel().x, r.getModel().y)){
+						iterRockets.remove();
+						iterDoodads.remove();
+						r.getModel().destroyed = true;
+						d.getModel().destroyed = true;
 					}
 				}
 			}
@@ -275,7 +279,8 @@ public class GameScreen implements Screen {
 			
 			
 			for(ProjectileController rocket : rockets){
-				rocket.draw(dt, batch, this);
+				if(!rocket.getModel().destroyed)
+					rocket.draw(dt, batch, this);
 			}
 			
 			//draw hp bar
